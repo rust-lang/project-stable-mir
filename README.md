@@ -41,7 +41,7 @@ We also participate on [Zulip][chat-link], feel free to introduce
 yourself over there and ask us any questions you have.
 
 
-[open issues]: /issues
+[open issues]: https://github.com/rust-lang/project-stable-mir/issues
 [chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-stable-mir
 [team-toml]: https://github.com/rust-lang/team/blob/master/teams/project-stable-mir.toml
 
