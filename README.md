@@ -19,7 +19,7 @@ git subtree push --prefix=compiler/rustc_smir url_to_your_fork_of_project_stable
 
 and then open a PR of your `some_feature_branch` against https://github.com/rust-lang/project-stable-mir
 
-### Updating the rustc librar
+### Updating the rustc library
 
 
 In the rustc repo, execute
