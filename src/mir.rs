@@ -5,6 +5,6 @@ pub use crate::very_unstable::middle::mir::{
     InlineAsmOperand, Local, LocalDecl, LocalInfo, LocalKind, Location, MirPhase, MirSource,
     NullOp, Operand, Place, PlaceRef, ProjectionElem, ProjectionKind, Promoted, RetagKind, Rvalue,
     Safety, SourceInfo, SourceScope, SourceScopeData, SourceScopeLocalData, Statement,
-    StatementKind, UnOp, UserTypeProjection, UserTypeProjections, VarBindingForm, VarDebugInfo,
-    VarDebugInfoContents,
+    StatementKind, Terminator, TerminatorKind, UnOp, UserTypeProjection, UserTypeProjections,
+    VarBindingForm, VarDebugInfo, VarDebugInfoContents,
 };
