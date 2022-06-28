@@ -13,5 +13,6 @@
 #![cfg_attr(not(feature = "default"), feature(rustc_private))]
 
 pub mod mir;
+pub mod ty;
 
 pub mod very_unstable;
