@@ -24,7 +24,7 @@ This is the repository we use to organise our work. Please refer to our [charter
 as our [github pages website][gh-pages] for more information on our goals and
 current scope.
 
-If you are wondering how to use Stable MIR in your project, also see the [rustc_smir crate].
+If you are wondering how to use Stable MIR in your project, also see the [rustc_smir crate][rustc_smir].
 
 [charter]: ./CHARTER.md
 [gh-pages]: https://rust-lang.github.io/project-stable-mir
