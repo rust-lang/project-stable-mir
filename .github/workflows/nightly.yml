@@ -1,0 +1,21 @@
+name: Run compiler tests
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # Run daily at 06:00 UTC
+  workflow_dispatch:     # Allow manual dispatching
+  pull_request:
+
+jobs:
+  compile-test:
+    name: Rust Compiler Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test
+        run: ./.github/scripts/run_rustc_tests.sh
+        env:
+          RUST_REPO: "/tmp/rustc"
+          TOOLS_BIN: "/tmp/smir/bin"

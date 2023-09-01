@@ -12,7 +12,7 @@ SMIR_PATH=$(git rev-parse --show-toplevel)
 export RUST_BACKTRACE=1
 
 pushd "${SMIR_PATH}"
-cargo +smir build -Z unstable-options --out-dir "${TOOLS_BIN}"
+cargo build -Z unstable-options --out-dir "${TOOLS_BIN}"
 export PATH="${TOOLS_BIN}":"${PATH}"
 
 if [[ ! -e "${RUST_REPO}" ]]; then
