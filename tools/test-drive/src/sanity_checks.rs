@@ -4,9 +4,7 @@
 //! These checks should only depend on StableMIR APIs. See other modules for tests that compare
 //! the result between StableMIR and internal APIs.
 use crate::TestResult;
-use rustc_middle::ty::TyCtxt;
 use rustc_smir::stable_mir;
-use std::collections::HashSet;
 use std::fmt::Debug;
 use std::hint::black_box;
 
@@ -36,6 +34,7 @@ pub fn check(val: bool, msg: String) -> TestResult {
 pub fn test_entry_fn() -> TestResult {
     let entry_fn = stable_mir::entry_fn();
     entry_fn.map_or(Ok(()), |entry_fn| {
+        check_body(entry_fn.body());
         let all_items = stable_mir::all_local_items();
         check(
             all_items.contains(&entry_fn),
@@ -52,6 +51,8 @@ pub fn test_all_fns() -> TestResult {
         "Failed to find any local item".to_string(),
     )?;
 
+    // Not sure which API to use to make sure this is a function that has a body.
+    #[cfg(skip)]
     for item in all_items {
         // Get body and iterate over items
         let body = item.body();

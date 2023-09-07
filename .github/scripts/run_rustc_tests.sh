@@ -23,7 +23,7 @@ fi
 pushd "${RUST_REPO}"
 SUITES=(
   # Match https://github.com/rust-lang/rust/blob/master/src/bootstrap/test.rs for now
-  "tests/ui/cfg ui"
+  "tests/ui/cfg yolo"
 )
 for suite_cfg in "${SUITES[@]}"; do
   # Hack to work on older bash like the ones on MacOS.
@@ -31,5 +31,5 @@ for suite_cfg in "${SUITES[@]}"; do
   suite=${suite_pair[0]}
   mode=${suite_pair[1]}
   echo "${suite_cfg} pair: $suite_pair mode: $mode"
-  compiletest --driver-path="${TOOLS_BIN}/test-drive" --mode=${mode} --src-base="${suite}" --output-path "${RUST_REPO}/build"
+  compiletest --driver-path="${TOOLS_BIN}/test-drive" --mode=${mode} --src-base="${suite}" --output-dir="${RUST_REPO}/build"
 done

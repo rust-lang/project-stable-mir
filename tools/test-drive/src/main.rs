@@ -10,11 +10,17 @@ extern crate rustc_middle;
 extern crate rustc_smir;
 
 use rustc_middle::ty::TyCtxt;
-use rustc_smir::{rustc_internal, stable_mir};
+use rustc_smir::rustc_internal;
+use rustc_smir::stable_mir::CompilerError;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::ops::ControlFlow;
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::process::ExitCode;
 
 const CHECK_ARG: &str = "--check-smir";
+const VERBOSE_ARG: &str = "--verbose";
+// Use a static variable for simplicity.
+static VERBOSE: AtomicBool = AtomicBool::new(false);
 
 type TestResult = Result<(), String>;
 
@@ -32,12 +38,15 @@ fn main() -> ExitCode {
             !is_check_arg
         })
         .collect();
-
-
-    let callback = if check_smir { test_stable_mir } else { |_: TyCtxt| ExitCode::SUCCESS };
-    let result = rustc_internal::StableMir::new(args, callback).continue_compilation().run();
-    if let Ok(test_result) = result {
-        test_result
+    VERBOSE.store(args.iter().any(|arg| &*arg == VERBOSE_ARG), Ordering::Relaxed);
+    let callback = if check_smir {
+        test_stable_mir
+    } else {
+        |_: TyCtxt| ControlFlow::<()>::Continue(())
+    };
+    let result = rustc_internal::StableMir::new(args, callback).run();
+    if result.is_ok() || matches!(result, Err(CompilerError::Skipped)) {
+        ExitCode::SUCCESS
     } else {
         ExitCode::FAILURE
     }
@@ -51,9 +60,15 @@ macro_rules! run_tests {
     };
 }
 
+fn info(msg: String) {
+    if VERBOSE.load(Ordering::Relaxed) {
+        println!("{}", msg);
+    }
+}
+
 /// This function invoke other tests and process their results.
 /// Tests should avoid panic,
-fn test_stable_mir(tcx: TyCtxt<'_>) -> ExitCode {
+fn test_stable_mir(_tcx: TyCtxt<'_>) -> ControlFlow<()> {
     let results = run_tests![
         sanity_checks::test_entry_fn,
         sanity_checks::test_all_fns,
@@ -61,16 +76,16 @@ fn test_stable_mir(tcx: TyCtxt<'_>) -> ExitCode {
         sanity_checks::test_crates
     ];
     let (success, failure): (Vec<_>, Vec<_>) = results.iter().partition(|r| r.is_ok());
-    println!(
+    info(format!(
         "Ran {} tests. {} succeeded. {} failed",
         results.len(),
         success.len(),
         failure.len()
-    );
+    ));
     if failure.is_empty() {
-        ExitCode::SUCCESS
+        ControlFlow::<()>::Continue(())
     } else {
-        ExitCode::FAILURE
+        ControlFlow::<()>::Break(())
     }
 }
 
@@ -79,10 +94,10 @@ fn run_test<F: FnOnce() -> TestResult>(name: &str, f: F) -> TestResult {
         Err(_) => Err("Panic: {}".to_string()),
         Ok(result) => result,
     };
-    println!(
+    info(format!(
         "Test {}: {}",
         name,
         result.as_ref().err().unwrap_or(&"Ok".to_string())
-    );
+    ));
     result
 }
