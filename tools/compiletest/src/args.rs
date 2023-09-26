@@ -7,14 +7,16 @@ use ui_test::{CommandBuilder, Config, OutputConflictHandling, RustfixMode};
 #[derive(Copy, Clone, Debug, clap::ValueEnum)]
 /// Decides what is expected of each test's exit status.
 pub enum Mode {
-    /// The test passes a full execution of the rustc driver
+    /// The test passes a full execution of the rustc driver.
     Pass,
-    /// The test produces an executable binary that can get executed on the host
+    /// The test produces an executable binary that can get executed on the host.
     Run,
-    /// The rustc driver panicked
-    Panic,
-    /// The rustc driver emitted an error
+    /// The rustc driver should emit an error.
     Fail,
+    /// The test is currently failing but is expected to succeed.
+    /// This is used to add test cases that reproduce an existing bug. This help us identify issues
+    /// that may be "accidentally" fixed.
+    FixMe,
     /// Run the tests, but always pass them as long as all annotations are satisfied and stderr files match.
     Yolo,
     /// The test passes a full execution of `cargo build`
@@ -54,7 +56,7 @@ impl From<Mode> for ui_test::Mode {
         match mode {
             Mode::Pass | Mode::CargoPass => ui_test::Mode::Pass,
             Mode::Run => ui_test::Mode::Run { exit_code: 0 },
-            Mode::Panic => ui_test::Mode::Panic,
+            Mode::FixMe |
             Mode::Fail => ui_test::Mode::Fail {
                 require_patterns: false,
                 rustfix: RustfixMode::Disabled,
@@ -84,9 +86,13 @@ impl From<Args> for Config {
 }
 
 fn rustc_flags(args: &Args) -> Vec<OsString> {
-    let mut flags = vec!["--check-smir".into()];
+    let mut flags = vec!["--smir-check".into()];
     if args.verbose || args.no_capture {
-        flags.push("--verbose".into());
+        flags.push("--smir-verbose".into());
+    }
+    if matches!(args.mode, Mode::FixMe) {
+        // Enable checks that should pass but may trigger an existing issue.
+        flags.push("--smir-fixme".into());
     }
     flags
 }

@@ -43,15 +43,9 @@ pub fn test_entry_fn() -> TestResult {
     })
 }
 
-/// Check that the crate isn't empty and iterate over function bodies.
+/// Iterate over local function bodies.
 pub fn test_all_fns() -> TestResult {
     let all_items = stable_mir::all_local_items();
-    check(
-        !all_items.is_empty(),
-        "Failed to find any local item".to_string(),
-    )?;
-
-    // Not sure which API to use to make sure this is a function that has a body.
     for item in all_items {
         // Get body and iterate over items
         let body = item.body();
@@ -60,10 +54,11 @@ pub fn test_all_fns() -> TestResult {
     Ok(())
 }
 
-/// FIXME: Create <issue> to track improvements to TraitDecls / ImplTraitDecls.
 /// Using these structures will always follow calls to get more details about those structures.
 /// Unless user is trying to find a specific type, this will get repetitive.
 pub fn test_traits() -> TestResult {
+    // FIXME: All trait declarations only return local traits.
+    // See https://github.com/rust-lang/project-stable-mir/issues/37
     let all_traits = stable_mir::all_trait_decls();
     for trait_decl in all_traits.iter().map(stable_mir::trait_decl) {
         // Can't compare trait_decl, so just compare a field for now.

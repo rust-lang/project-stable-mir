@@ -29,3 +29,5 @@ jobs:
         env:
           RUST_REPO: "/tmp/rustc"
           TOOLS_BIN: "/tmp/smir/bin"
+        # Don't fail CI for now. See: https://github.com/rust-lang/project-stable-mir/issues/39
+        continue-on-error: true

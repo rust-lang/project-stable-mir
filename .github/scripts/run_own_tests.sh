@@ -20,7 +20,7 @@ function build_smir_tools() {
 function run_tests() {
   SUITES=(
     "sanity-checks pass"
-    "fixme fail"
+    "fixme fix-me"
   )
   for suite_cfg in "${SUITES[@]}"; do
     # Hack to work on older bash like the ones on MacOS.

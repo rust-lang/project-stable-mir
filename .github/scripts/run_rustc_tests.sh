@@ -87,7 +87,9 @@ function run_tests() {
       --android-cross-path= \
       --target=${HOST} \
       --llvm-filecheck="${FILE_CHECK}" \
-      --channel=nightly
+      --channel=nightly \
+      --target-rustcflags="--smir-check" \
+      --host-rustcflags="--smir-check"
   done
 }
 
