@@ -14,7 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Test
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+
+      - name: Test local suites
+        run: ./.github/scripts/run_own_tests.sh
+        env:
+          TOOLS_BIN: "/tmp/smir/bin"
+
+      - name: Test rustc suites
         run: ./.github/scripts/run_rustc_tests.sh
         env:
           RUST_REPO: "/tmp/rustc"

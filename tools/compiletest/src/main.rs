@@ -2,8 +2,8 @@
 
 mod args;
 
-use std::process::ExitCode;
 use clap::Parser;
+use std::process::ExitCode;
 use ui_test::{status_emitter, Config};
 
 fn main() -> ExitCode {
@@ -31,5 +31,9 @@ fn main() -> ExitCode {
         ui_test::default_per_file_config,
         (text, status_emitter::Gha::<true> { name }),
     );
-    if result.is_ok() { ExitCode::SUCCESS } else { ExitCode::FAILURE }
+    if result.is_ok() {
+        ExitCode::SUCCESS
+    } else {
+        ExitCode::FAILURE
+    }
 }

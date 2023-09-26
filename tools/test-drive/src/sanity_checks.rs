@@ -52,7 +52,6 @@ pub fn test_all_fns() -> TestResult {
     )?;
 
     // Not sure which API to use to make sure this is a function that has a body.
-    #[cfg(skip)]
     for item in all_items {
         // Get body and iterate over items
         let body = item.body();

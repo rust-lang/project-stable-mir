@@ -12,10 +12,10 @@ extern crate rustc_smir;
 use rustc_middle::ty::TyCtxt;
 use rustc_smir::rustc_internal;
 use rustc_smir::stable_mir::CompilerError;
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::ops::ControlFlow;
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::process::ExitCode;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 const CHECK_ARG: &str = "--check-smir";
 const VERBOSE_ARG: &str = "--verbose";
@@ -38,7 +38,10 @@ fn main() -> ExitCode {
             !is_check_arg
         })
         .collect();
-    VERBOSE.store(args.iter().any(|arg| &*arg == VERBOSE_ARG), Ordering::Relaxed);
+    VERBOSE.store(
+        args.iter().any(|arg| &*arg == VERBOSE_ARG),
+        Ordering::Relaxed,
+    );
     let callback = if check_smir {
         test_stable_mir
     } else {
@@ -62,7 +65,8 @@ macro_rules! run_tests {
 
 fn info(msg: String) {
     if VERBOSE.load(Ordering::Relaxed) {
-        println!("{}", msg);
+        // We filter output based on [T-DRIVE] prefix.
+        eprintln!("[T-DRIVE] {}", msg);
     }
 }
 
