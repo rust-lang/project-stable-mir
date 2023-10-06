@@ -56,8 +56,7 @@ impl From<Mode> for ui_test::Mode {
         match mode {
             Mode::Pass | Mode::CargoPass => ui_test::Mode::Pass,
             Mode::Run => ui_test::Mode::Run { exit_code: 0 },
-            Mode::FixMe |
-            Mode::Fail => ui_test::Mode::Fail {
+            Mode::FixMe | Mode::Fail => ui_test::Mode::Fail {
                 require_patterns: false,
                 rustfix: RustfixMode::Disabled,
             },

@@ -1,14 +1,36 @@
+name: Deploy Book
 on:
+  pull_request:
   push:
     branches:
       - main
 
 jobs:
-  ci:
-    name: CI
+  build-book:
+    name: Build Book
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: XAMPPRocky/deploy-mdbook@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install mdbook
+        run: cargo install mdbook --version "^0.4" --locked
+
+      - name: Run mdbook
+        run: mdbook build
+
+      - name: Upload book
+        uses: actions/upload-pages-artifact@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: book/
+          retention-days: "3"
+
+      - name: Deploy Book
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: ${{ github.event_name == 'push' && startsWith('refs/heads/main', github.ref) }}
+        with:
+          branch: gh-pages
+          folder: book/
+          single-commit: true

@@ -37,13 +37,16 @@ type TestResult = Result<(), String>;
 /// `cargo rustc --check-smir`.
 fn main() -> ExitCode {
     let args = std::env::args();
-    let (smir_args, rustc_args) : (Vec<String>, _) = args.partition
-    (|arg| arg
-        .starts_with
-    ("--smir"));
+    let (smir_args, rustc_args): (Vec<String>, _) = args.partition(|arg| arg.starts_with("--smir"));
     let callback = if smir_args.contains(&CHECK_ARG.to_string()) {
-        VERBOSE.store(smir_args.contains(&VERBOSE_ARG.to_string()), Ordering::Relaxed);
-        FIXME_CHECKS.store(smir_args.contains(&FIXME_ARG.to_string()), Ordering::Relaxed);
+        VERBOSE.store(
+            smir_args.contains(&VERBOSE_ARG.to_string()),
+            Ordering::Relaxed,
+        );
+        FIXME_CHECKS.store(
+            smir_args.contains(&FIXME_ARG.to_string()),
+            Ordering::Relaxed,
+        );
         test_stable_mir
     } else {
         |_: TyCtxt| ControlFlow::<()>::Continue(())
