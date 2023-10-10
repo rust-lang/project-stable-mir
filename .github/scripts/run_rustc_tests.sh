@@ -19,10 +19,14 @@ TOOLS_BIN="${TOOLS_BIN:-"/tmp/smir/bin"}"
 # Assume we are inside SMIR repository
 SMIR_PATH=$(git rev-parse --show-toplevel)
 
+# Set the toolchain to be used in this script
+REPO_TOOLCHAIN=$(rustup show active-toolchain | (read toolchain _; echo $toolchain))
+TOOLCHAIN="${TOOLCHAIN:-${REPO_TOOLCHAIN}}"
+
 # Build stable_mir tools
 function build_smir_tools() {
   pushd "${SMIR_PATH}"
-  cargo +nightly build -Z unstable-options --out-dir "${TOOLS_BIN}"
+  cargo +${TOOLCHAIN} build -Z unstable-options --out-dir "${TOOLS_BIN}"
   export PATH="${TOOLS_BIN}":"${PATH}"
 }
 
@@ -32,7 +36,7 @@ function setup_rustc_repo() {
     mkdir -p "$(dirname ${RUST_REPO})"
     git clone -b master https://github.com/rust-lang/rust.git "${RUST_REPO}"
     pushd "${RUST_REPO}"
-    commit="$(rustc +nightly -vV | awk '/^commit-hash/ { print $2 }')"
+    commit="$(rustc +${TOOLCHAIN} -vV | awk '/^commit-hash/ { print $2 }')"
     git checkout ${commit}
     git submodule init -- "${RUST_REPO}/library/stdarch"
     git submodule update
@@ -56,9 +60,9 @@ function run_tests() {
     #"pretty pretty" -- 2 failing tests
   )
 
-  SYSROOT=$(rustc +nightly --print sysroot)
+  SYSROOT=$(rustc +${TOOLCHAIN} --print sysroot)
   PY_PATH=$(type -P python3)
-  HOST=$(rustc +nightly -vV | awk '/^host/ { print $2 }')
+  HOST=$(rustc +${TOOLCHAIN} -vV | awk '/^host/ { print $2 }')
   FILE_CHECK="$(which FileCheck-12 || which FileCheck-13 || which FileCheck-14)"
 
   for suite_cfg in "${SUITES[@]}"; do
@@ -68,7 +72,7 @@ function run_tests() {
     mode=${suite_pair[1]}
 
     echo "#### Running suite: ${suite} mode: ${mode}"
-    cargo +nightly run -p compiletest -- \
+    cargo +${TOOLCHAIN} run -p compiletest -- \
       --compile-lib-path="${SYSROOT}/lib" \
       --run-lib-path="${SYSROOT}/lib"\
       --python="${PY_PATH}" \
