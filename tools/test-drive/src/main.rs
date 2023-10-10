@@ -8,10 +8,11 @@ mod sanity_checks;
 
 extern crate rustc_middle;
 extern crate rustc_smir;
+extern crate stable_mir;
 
 use rustc_middle::ty::TyCtxt;
 use rustc_smir::rustc_internal;
-use rustc_smir::stable_mir::CompilerError;
+use stable_mir::CompilerError;
 use std::ops::ControlFlow;
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::process::ExitCode;

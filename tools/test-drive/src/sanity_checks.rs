@@ -4,7 +4,7 @@
 //! These checks should only depend on StableMIR APIs. See other modules for tests that compare
 //! the result between StableMIR and internal APIs.
 use crate::TestResult;
-use rustc_smir::stable_mir;
+use stable_mir;
 use std::fmt::Debug;
 use std::hint::black_box;
 
@@ -83,34 +83,32 @@ pub fn test_traits() -> TestResult {
 
 pub fn test_crates() -> TestResult {
     for krate in stable_mir::external_crates() {
-        check_equal(
-            stable_mir::find_crate(&krate.name.as_str()),
-            Some(krate),
-            "external crate mismatch",
+        check(
+            stable_mir::find_crates(&krate.name.as_str()).contains(&krate),
+            format!("Cannot find {krate:?}"),
         )?;
     }
 
     let local = stable_mir::local_crate();
-    check_equal(
-        stable_mir::find_crate(&local.name.as_str()),
-        Some(local),
-        "local crate mismatch",
+    check(
+        stable_mir::find_crates(&local.name.as_str()).contains(&local),
+        format!("Cannot find {local:?}"),
     )
 }
 
 /// Visit all local types, statements and terminator to ensure nothing crashes.
 fn check_body(body: stable_mir::mir::Body) {
     for bb in body.blocks {
-        for stmt in bb.statements {
-            black_box(matches!(stmt, stable_mir::mir::Statement::Assign(..)));
+        for stable_mir::mir::Statement { kind, .. } in bb.statements {
+            black_box(matches!(kind, stable_mir::mir::StatementKind::Assign(..)));
         }
         black_box(matches!(
-            bb.terminator,
-            stable_mir::mir::Terminator::Goto { .. }
+            bb.terminator.kind,
+            stable_mir::mir::TerminatorKind::Goto { .. }
         ));
     }
 
     for local in body.locals {
-        black_box(matches!(local.kind(), stable_mir::ty::TyKind::Alias(..)));
+        black_box(matches!(local.ty.kind(), stable_mir::ty::TyKind::Alias(..)));
     }
 }
