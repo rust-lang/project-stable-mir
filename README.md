@@ -7,6 +7,7 @@
 -->
 ![project group status: active](https://img.shields.io/badge/status-active-brightgreen.svg)
 [![project group documentation](https://img.shields.io/badge/MDBook-View%20Documentation-blue)][gh-pages]
+[![Run compiler tests](https://github.com/rust-lang/project-stable-mir/actions/workflows/nightly.yml/badge.svg)](https://github.com/rust-lang/project-stable-mir/actions/workflows/nightly.yml)
 
 
 <!--
@@ -47,4 +48,3 @@ yourself over there and ask us any questions you have.
 [open issues]: https://github.com/rust-lang/project-stable-mir/issues
 [chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-stable-mir
 [team-toml]: https://github.com/rust-lang/team/blob/master/teams/project-stable-mir.toml
-
