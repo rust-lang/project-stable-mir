@@ -6,12 +6,14 @@
 
 mod sanity_checks;
 
+extern crate rustc_driver;
+extern crate rustc_interface;
 extern crate rustc_middle;
 extern crate rustc_smir;
 extern crate stable_mir;
 
 use rustc_middle::ty::TyCtxt;
-use rustc_smir::rustc_internal;
+use rustc_smir::{run, rustc_internal};
 use stable_mir::CompilerError;
 use std::ops::ControlFlow;
 use std::panic::{catch_unwind, AssertUnwindSafe};
@@ -39,7 +41,7 @@ type TestResult = Result<(), String>;
 fn main() -> ExitCode {
     let args = std::env::args();
     let (smir_args, rustc_args): (Vec<String>, _) = args.partition(|arg| arg.starts_with("--smir"));
-    let callback = if smir_args.contains(&CHECK_ARG.to_string()) {
+    let result = if smir_args.contains(&CHECK_ARG.to_string()) {
         VERBOSE.store(
             smir_args.contains(&VERBOSE_ARG.to_string()),
             Ordering::Relaxed,
@@ -48,11 +50,10 @@ fn main() -> ExitCode {
             smir_args.contains(&FIXME_ARG.to_string()),
             Ordering::Relaxed,
         );
-        test_stable_mir
+        run!(rustc_args, tcx, test_stable_mir(tcx))
     } else {
-        |_: TyCtxt| ControlFlow::<()>::Continue(())
+        run!(rustc_args, ControlFlow::<()>::Continue(()))
     };
-    let result = rustc_internal::StableMir::new(rustc_args, callback).run();
     if result.is_ok() || matches!(result, Err(CompilerError::Skipped)) {
         ExitCode::SUCCESS
     } else {

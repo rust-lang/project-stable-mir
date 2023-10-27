@@ -98,8 +98,8 @@ pub fn test_crates() -> TestResult {
 
 /// Visit all local types, statements and terminator to ensure nothing crashes.
 fn check_body(body: stable_mir::mir::Body) {
-    for bb in body.blocks {
-        for stable_mir::mir::Statement { kind, .. } in bb.statements {
+    for bb in &body.blocks {
+        for stable_mir::mir::Statement { kind, .. } in &bb.statements {
             black_box(matches!(kind, stable_mir::mir::StatementKind::Assign(..)));
         }
         black_box(matches!(
@@ -108,7 +108,7 @@ fn check_body(body: stable_mir::mir::Body) {
         ));
     }
 
-    for local in body.locals {
+    for local in body.locals() {
         black_box(matches!(local.ty.kind(), stable_mir::ty::TyKind::Alias(..)));
     }
 }
