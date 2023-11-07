@@ -37,8 +37,12 @@ function setup_rustc_repo() {
     git clone -b master https://github.com/rust-lang/rust.git "${RUST_REPO}"
     pushd "${RUST_REPO}"
     commit="$(rustc +${TOOLCHAIN} -vV | awk '/^commit-hash/ { print $2 }')"
-    git checkout ${commit}
-    git submodule init -- "${RUST_REPO}/library/stdarch"
+    if [[ "${commit}" != "unknown" ]]; then
+       # For custom toolchain, this may return "unknown". Skip this step if that's the case.
+       # In that case, we will use the HEAD of the main branch.
+      git checkout "${commit}"
+    fi
+    git submodule init -- "library/stdarch"
     git submodule update
   else
     pushd "${RUST_REPO}"
@@ -64,6 +68,14 @@ function run_tests() {
   PY_PATH=$(type -P python3)
   HOST=$(rustc +${TOOLCHAIN} -vV | awk '/^host/ { print $2 }')
   FILE_CHECK="$(which FileCheck-12 || which FileCheck-13 || which FileCheck-14)"
+
+  echo "#---------- Variables -------------"
+  echo "RUST_REPO: ${RUST_REPO}"
+  echo "TOOLS_BIN: ${TOOLS_BIN}"
+  echo "TOOLCHAIN: ${TOOLCHAIN}"
+  echo "SYSROOT: ${SYSROOT}"
+  echo "FILE_CHECK: ${FILE_CHECK}"
+  echo "-----------------------------------"
 
   for suite_cfg in "${SUITES[@]}"; do
     # Hack to work on older bash like the ones on MacOS.
