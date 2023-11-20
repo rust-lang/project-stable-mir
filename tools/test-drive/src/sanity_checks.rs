@@ -15,7 +15,7 @@ where
 {
     if val != expected {
         Err(format!(
-            "{}: \n Expected: {:?}\n Found: {:?}",
+            "{}: \n Expected: `{:?}`\n Found: `{:?}`",
             msg, expected, val
         ))
     } else {
@@ -39,7 +39,7 @@ pub fn test_entry_fn() -> TestResult {
         let all_items = stable_mir::all_local_items();
         check(
             all_items.contains(&entry_fn),
-            format!("Failed to find entry_fn `{:?}`", entry_fn),
+            format!("Failed to find entry_fn: `{:?}`", entry_fn),
         )?;
         check_equal(
             entry_fn.kind(),
@@ -81,7 +81,7 @@ pub fn test_traits() -> TestResult {
     {
         check(
             all_traits.contains(&trait_impl.value.def_id),
-            format!("Failed to find trait definition {trait_impl:?}"),
+            format!("Failed to find trait definition: `{trait_impl:?}`"),
         )?;
     }
     Ok(())
@@ -91,14 +91,14 @@ pub fn test_crates() -> TestResult {
     for krate in stable_mir::external_crates() {
         check(
             stable_mir::find_crates(&krate.name.as_str()).contains(&krate),
-            format!("Cannot find {krate:?}"),
+            format!("Cannot find `{krate:?}`"),
         )?;
     }
 
     let local = stable_mir::local_crate();
     check(
         stable_mir::find_crates(&local.name.as_str()).contains(&local),
-        format!("Cannot find {local:?}"),
+        format!("Cannot find local: `{local:?}`"),
     )
 }
 
@@ -131,11 +131,9 @@ pub fn test_instances() -> TestResult {
                         match constant.ty().kind().rigid() {
                             Some(ty::RigidTy::FnDef(def, args)) => {
                                 queue.push(mir::mono::Instance::resolve(*def, &args).unwrap());
-                            },
-                            Some(ty::RigidTy::FnPtr(..)) => {
-                                /* ignore FnPtr for now */
-                            },
-                            ty => unreachable!("Unexpected call: {ty:?}"),
+                            }
+                            Some(ty::RigidTy::FnPtr(..)) => { /* ignore FnPtr for now */ }
+                            ty => check(false, format!("Unexpected call: `{ty:?}`"))?,
                         }
                     }
                     _ => { /* Do nothing */ }
@@ -182,7 +180,7 @@ fn check_body(name: &str, body: &mir::Body) -> Result<BodyVisitor, String> {
             // See https://github.com/rust-lang/project-stable-mir/issues/50.
             check(
                 false,
-                format!("Function `{name}`: Missing type {:?}", local.ty),
+                format!("Function `{name}`: Missing type `{:?}`", local.ty),
             )?;
         };
     }
