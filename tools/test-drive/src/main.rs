@@ -62,7 +62,7 @@ fn main() -> ExitCode {
 }
 
 macro_rules! run_tests {
-    ($( $test:path ),+) => {
+    ($( $test:path ),+ $(,)?) => {
         [$({
             run_test(stringify!($test), || { $test() })
         },)+]
@@ -82,7 +82,8 @@ fn test_stable_mir(_tcx: TyCtxt<'_>) -> ControlFlow<()> {
     let mut results = Vec::from(run_tests![
         sanity_checks::test_entry_fn,
         sanity_checks::test_all_fns,
-        sanity_checks::test_crates
+        sanity_checks::test_crates,
+        sanity_checks::test_instances,
     ]);
     if FIXME_CHECKS.load(Ordering::Relaxed) {
         results.extend_from_slice(&run_tests!(sanity_checks::test_traits))
@@ -103,13 +104,13 @@ fn test_stable_mir(_tcx: TyCtxt<'_>) -> ControlFlow<()> {
 
 fn run_test<F: FnOnce() -> TestResult>(name: &str, f: F) -> TestResult {
     let result = match catch_unwind(AssertUnwindSafe(f)) {
-        Err(_) => Err("Panic: {}".to_string()),
+        Err(_) => Err("Panic!".to_string()),
         Ok(result) => result,
     };
-    info(format!(
-        "Test {}: {}",
-        name,
-        result.as_ref().err().unwrap_or(&"Ok".to_string())
-    ));
+    if let Err(ref msg) = result {
+        eprintln!("Test {}: Failed:\n    - {}", name, msg);
+    } else {
+        info(format!("Test {}: Ok", name,));
+    }
     result
 }

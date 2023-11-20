@@ -48,6 +48,10 @@ pub struct Args {
     /// Run test-driver on verbose mode to print test outputs.
     #[arg(long)]
     pub no_capture: bool,
+
+    /// Override the output files when there's a difference instead of failing the test.
+    #[arg(long)]
+    pub bless: bool,
 }
 
 impl From<Mode> for ui_test::Mode {
@@ -76,8 +80,15 @@ impl From<Args> for Config {
             driver_config(&args)
         };
         config.filter(r"\[T-DRIVE\].*\n", "");
+        // Remove stable mir details, since they can include internal variables which are fairly
+        // unstable.
+        config.filter(r"(?<a>[^`]*)`[^`]+`(?<b>[^`]*)", "$a`<redacted>`$b");
         config.mode = ui_test::Mode::from(args.mode);
-        config.output_conflict_handling = OutputConflictHandling::Error("Should Fail".to_string());
+        config.output_conflict_handling = if args.bless {
+            OutputConflictHandling::Bless
+        } else {
+            OutputConflictHandling::Error("Should Fail".to_string())
+        };
         config.out_dir = args.output_dir;
         //config.run_lib_path = PathBuf::from(env!("RUSTC_LIB_PATH"));
         config
