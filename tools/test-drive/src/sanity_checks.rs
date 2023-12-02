@@ -4,7 +4,7 @@
 //! These checks should only depend on StableMIR APIs. See other modules for tests that compare
 //! the result between StableMIR and internal APIs.
 use crate::TestResult;
-use stable_mir::{self, mir, mir::MirVisitor, ty};
+use stable_mir::{self, mir, mir::MirVisitor, ty, CrateDef};
 use std::collections::HashSet;
 use std::fmt::Debug;
 use std::iter::zip;
