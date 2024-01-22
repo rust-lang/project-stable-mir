@@ -4,6 +4,7 @@
 //! These checks should only depend on StableMIR APIs. See other modules for tests that compare
 //! the result between StableMIR and internal APIs.
 use crate::TestResult;
+use stable_mir::ty::{ImplDef, TraitDef};
 use stable_mir::{self, mir, mir::MirVisitor, ty, CrateDef};
 use std::collections::HashSet;
 use std::fmt::Debug;
@@ -60,24 +61,12 @@ pub fn test_all_fns() -> TestResult {
     Ok(())
 }
 
-/// Using these structures will always follow calls to get more details about those structures.
-/// Unless user is trying to find a specific type, this will get repetitive.
+/// Test that we can retrieve information about the trait declaration for every trait implementation.
 pub fn test_traits() -> TestResult {
-    // FIXME: All trait declarations only return local traits.
-    // See https://github.com/rust-lang/project-stable-mir/issues/37
-    let all_traits = stable_mir::all_trait_decls();
-    for trait_decl in all_traits.iter().map(stable_mir::trait_decl) {
-        // Can't compare trait_decl, so just compare a field for now.
-        check_equal(
-            stable_mir::trait_decl(&trait_decl.def_id).specialization_kind,
-            trait_decl.specialization_kind,
-            "external crate mismatch",
-        )?;
-    }
-
+    let all_traits = HashSet::<TraitDef>::from_iter(stable_mir::all_trait_decls().into_iter());
     for trait_impl in stable_mir::all_trait_impls()
         .iter()
-        .map(stable_mir::trait_impl)
+        .map(ImplDef::trait_impl)
     {
         check(
             all_traits.contains(&trait_impl.value.def_id),

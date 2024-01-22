@@ -104,6 +104,8 @@ function run_tests() {
       --target=${HOST} \
       --llvm-filecheck="${FILE_CHECK}" \
       --channel=nightly \
+      --git-repository="rust-lang/project-stable-mir" \
+      --nightly-branch="main" \
       --target-rustcflags="--smir-check" \
       --host-rustcflags="--smir-check"
   done
