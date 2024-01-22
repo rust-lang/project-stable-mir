@@ -2,17 +2,15 @@
 
 #![feature(rustc_private)]
 #![feature(assert_matches)]
-#![feature(result_option_inspect)]
 
 mod sanity_checks;
 
 extern crate rustc_driver;
 extern crate rustc_interface;
-extern crate rustc_middle;
+#[macro_use]
 extern crate rustc_smir;
 extern crate stable_mir;
 
-use rustc_middle::ty::TyCtxt;
 use rustc_smir::{run, rustc_internal};
 use stable_mir::CompilerError;
 use std::ops::ControlFlow;
@@ -50,9 +48,9 @@ fn main() -> ExitCode {
             smir_args.contains(&FIXME_ARG.to_string()),
             Ordering::Relaxed,
         );
-        run!(rustc_args, tcx, test_stable_mir(tcx))
+        run!(rustc_args, test_stable_mir)
     } else {
-        run!(rustc_args, ControlFlow::<()>::Continue(()))
+        run!(rustc_args, || ControlFlow::<()>::Continue(()))
     };
     if result.is_ok() || matches!(result, Err(CompilerError::Skipped)) {
         ExitCode::SUCCESS
@@ -78,7 +76,7 @@ fn info(msg: String) {
 
 /// This function invoke other tests and process their results.
 /// Tests should avoid panic,
-fn test_stable_mir(_tcx: TyCtxt<'_>) -> ControlFlow<()> {
+fn test_stable_mir() -> ControlFlow<()> {
     let mut results = Vec::from(run_tests![
         sanity_checks::test_entry_fn,
         sanity_checks::test_all_fns,
