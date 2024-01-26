@@ -1,0 +1,12 @@
+# Cargo workspace for utility tools used to check stable-mir in CI
+[workspace]
+resolver = "2"
+members = [
+    "tools/compiletest",
+    "tools/test-drive",
+]
+
+exclude = [
+    "build",
+    "target",
+]
