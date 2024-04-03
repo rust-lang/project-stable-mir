@@ -9,4 +9,5 @@ members = [
 exclude = [
     "build",
     "target",
+    "demo",
 ]
