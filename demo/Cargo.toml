@@ -1,8 +1,10 @@
 [package]
-name = "test-drive"
-description = "A rustc wrapper that can be used to test stable-mir on a crate"
+name = "smir-demo"
+description = "A little demo tool on how to use StableMIR to analyze crates"
 version = "0.0.0"
 edition = "2021"
+
+[dependencies]
 
 [package.metadata.rust-analyzer]
 # This crate uses #[feature(rustc_private)].
