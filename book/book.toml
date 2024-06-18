@@ -1,0 +1,17 @@
+[book]
+title = "Stable MIR Librarification Project"
+language = "en"
+
+[output.html]
+curly-quotes = true
+git-repository-url = "https://github.com/rust-lang/project-stable-mir"
+site-url = "/project-stable-mir/"
+
+[output.html.playground]
+runnable = false
+
+[rust]
+edition = "2021"
+
+[build]
+build-dir = "build"

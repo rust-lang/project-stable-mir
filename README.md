@@ -20,20 +20,15 @@ API based on the rust compiler mid-level intermediate representation (MIR) that 
 for development of tools that want to perform sophisticated analyses and make stronger guarantees about the
 behavior of Rust programs.
 
+This is the repository we use to organise and document our work.
 
-This is the repository we use to organise our work. Please refer to our [charter] as well
-as our [github pages website][gh-pages] for more information on our goals and
-current scope.
+If you are wondering how to use Stable MIR in your project, please check out the [Getting Started][tutorial] chapter.
 
-If you are wondering how to use Stable MIR in your project, also see the [rustc_smir crate][rustc_smir].
-
-[charter]: ./CHARTER.md
 [gh-pages]: https://rust-lang.github.io/project-stable-mir
-[rustc_smir]: https://github.com/rust-lang/rust/tree/master/compiler/rustc_smir
 
+[tutorial]: https://rust-lang.github.io/project-stable-mir/getting-started.html
 
 ## How Can I Get Involved?
-
 
 [You can find a list of the current members available
 on `rust-lang/team`.][team-toml]
@@ -46,5 +41,7 @@ yourself over there and ask us any questions you have.
 
 
 [open issues]: https://github.com/rust-lang/project-stable-mir/issues
+
 [chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-stable-mir
+
 [team-toml]: https://github.com/rust-lang/team/blob/master/teams/project-stable-mir.toml
