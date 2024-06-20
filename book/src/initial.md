@@ -94,7 +94,7 @@ fn print_items(rustc_args: Vec<String>) {
 }
 ```
 
-However, the following usage isn't valid, and `stable_mir` will crash when we invoke the `name()` function.
+However, the following usage isn't valid, and `stable_mir` will panic when we invoke the `name()` function.
 
 ```rust
 fn broken_print_items(rustc_args: Vec<String>) {
