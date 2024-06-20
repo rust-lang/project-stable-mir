@@ -1,3 +1,5 @@
 [toolchain]
-channel = "nightly-2024-04-02"
-components = ["llvm-tools-preview", "rustc-dev", "rust-src", "rustfmt"]
+# Most users will want to pin down a specific version, e.g.:
+# channel = "nightly-2024-06-17"
+channel = "nightly"
+components = ["llvm-tools", "rustc-dev", "rust-src"]

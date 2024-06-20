@@ -19,12 +19,12 @@ jobs:
         run: cargo install mdbook --version "^0.4" --locked
 
       - name: Run mdbook
-        run: mdbook build
+        run: mdbook build book
 
       - name: Upload book
         uses: actions/upload-pages-artifact@v2
         with:
-          path: book/
+          path: book/build
           retention-days: "3"
 
       - name: Deploy Book
@@ -32,5 +32,5 @@ jobs:
         if: ${{ github.event_name == 'push' && startsWith('refs/heads/main', github.ref) }}
         with:
           branch: gh-pages
-          folder: book/
+          folder: book/build
           single-commit: true
