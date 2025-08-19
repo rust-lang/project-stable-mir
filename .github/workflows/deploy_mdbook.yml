@@ -22,7 +22,7 @@ jobs:
         run: mdbook build book
 
       - name: Upload book
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: book/build
           retention-days: "3"
