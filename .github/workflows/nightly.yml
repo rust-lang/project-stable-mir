@@ -6,28 +6,29 @@ on:
   workflow_dispatch:     # Allow manual dispatching
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  compile-test:
-    name: Rust Compiler Tests
+  msrv:
+    name: MSRV Nightly Tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install latest nightly
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly
+          # Note that the downloaded version is dated 2025-08-09.
+          toolchain: nightly-2025-08-10
+          components: rust-src
+      - run: ./x test
 
-      - name: Test local suites
-        run: ./.github/scripts/run_own_tests.sh
-        env:
-          TOOLS_BIN: "/tmp/smir/bin"
-
-      - name: Test rustc suites
-        run: ./.github/scripts/run_rustc_tests.sh
-        env:
-          RUST_REPO: "/tmp/rustc"
-          TOOLS_BIN: "/tmp/smir/bin"
-        # Don't fail CI for now. See: https://github.com/rust-lang/project-stable-mir/issues/39
-        continue-on-error: true
+  latest:
+    name: Latest Nightly Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src
+      - run: ./x test
