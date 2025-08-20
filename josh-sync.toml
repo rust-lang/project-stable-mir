@@ -1,0 +1,3 @@
+org = "rust-lang"
+repo = "project-stable-mir"
+filter = ":/compiler/rustc_public:prefix=rustc_public"
