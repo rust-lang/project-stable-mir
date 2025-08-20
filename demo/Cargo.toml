@@ -1,6 +1,6 @@
 [package]
-name = "smir-demo"
-description = "A little demo tool on how to use StableMIR to analyze crates"
+name = "rpub-demo"
+description = "A little demo tool on how to use rustc_public to analyze crates"
 version = "0.0.0"
 edition = "2021"
 

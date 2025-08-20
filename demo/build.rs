@@ -9,7 +9,7 @@ pub fn main() {
         .iter()
         .collect();
     println!(
-        "cargo:rustc-link-arg-bin=smir-demo=-Wl,-rpath,{}",
+        "cargo:rustc-link-arg-bin=rpub-demo=-Wl,-rpath,{}",
         rustc_lib.display()
     );
 }
