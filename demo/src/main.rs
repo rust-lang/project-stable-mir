@@ -5,26 +5,25 @@
 
 extern crate rustc_driver;
 extern crate rustc_interface;
-#[macro_use]
-extern crate rustc_smir;
-extern crate stable_mir;
+extern crate rustc_middle;
+extern crate rustc_public;
 
 use std::collections::HashSet;
 use std::io::stdout;
-use rustc_smir::{run, rustc_internal};
-use stable_mir::{CompilerError, CrateDef};
+use rustc_public::run;
+use rustc_public::{CompilerError, CrateDef};
 use std::ops::ControlFlow;
 use std::process::ExitCode;
-use stable_mir::mir::{LocalDecl, MirVisitor, Terminator, TerminatorKind};
-use stable_mir::mir::mono::Instance;
-use stable_mir::mir::visit::Location;
-use stable_mir::ty::{RigidTy, Ty, TyKind};
+use rustc_public::mir::{LocalDecl, MirVisitor, Terminator, TerminatorKind};
+use rustc_public::mir::mono::Instance;
+use rustc_public::mir::visit::Location;
+use rustc_public::ty::{RigidTy, Ty, TyKind};
 
 
 /// This is a wrapper that can be used to replace rustc.
 fn main() -> ExitCode {
-    let rustc_args = std::env::args().into_iter().collect();
-    let result = run!(rustc_args, start_demo);
+    let rustc_args: Vec<String> = std::env::args().collect();
+    let result = run!(&rustc_args, start_demo);
     match result {
         Ok(_) | Err(CompilerError::Skipped | CompilerError::Interrupted(_)) => ExitCode::SUCCESS,
         _ => ExitCode::FAILURE,
@@ -32,15 +31,15 @@ fn main() -> ExitCode {
 }
 
 fn start_demo() -> ControlFlow<()> {
-    let crate_name = stable_mir::local_crate().name;
+    let crate_name = rustc_public::local_crate().name;
     eprintln!("--- Analyzing crate: {crate_name}");
 
-    let crate_items = stable_mir::all_local_items();
+    let crate_items = rustc_public::all_local_items();
     for item in crate_items {
         eprintln!("  - {} @{:?}", item.name(), item.span())
     }
 
-    let entry_fn = stable_mir::entry_fn().unwrap();
+    let entry_fn = rustc_public::entry_fn().unwrap();
     let entry_instance = Instance::try_from(entry_fn).unwrap();
     analyze_instance(entry_instance);
     ControlFlow::Break(())
