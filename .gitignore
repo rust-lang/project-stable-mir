@@ -1,7 +1,13 @@
 /book/build
 **/target
 
+# direnv
+.envrc
+/.direnv
+
 .idea
 *.swp
 *.swo
 .vscode
+
+Cargo.lock

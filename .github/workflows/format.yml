@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Rust Toolchain
+        uses: dtolnay/rust-toolchain@nightly
 
       - name: Run Rust Format
-        run: cargo fmt --check
+        run: ./x fmt --check

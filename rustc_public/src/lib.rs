@@ -6,6 +6,7 @@
 //!
 //! This API is still completely unstable and subject to change.
 
+#![feature(rustc_private)]
 #![allow(rustc::usage_of_ty_tykind)]
 #![doc(
     html_root_url = "https://doc.rust-lang.org/nightly/nightly-rustc/",
@@ -18,6 +19,15 @@
 //!
 //! The goal is to eventually be published on
 //! [crates.io](https://crates.io).
+
+extern crate rustc_abi;
+extern crate rustc_driver;
+extern crate rustc_hir;
+extern crate rustc_middle;
+extern crate rustc_public_bridge;
+extern crate rustc_session;
+extern crate rustc_span;
+extern crate rustc_target;
 
 use std::fmt::Debug;
 use std::{fmt, io};
