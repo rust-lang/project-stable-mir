@@ -1,5 +1,5 @@
 # Run rustfmt with this config (it should be picked up automatically).
-# We are supposed to follow the style used by rustc.
+# Matches the rustfmt.toml of rustc.
 style_edition = "2024"
 use_small_heuristics = "Max"
 merge_derives = false
@@ -9,13 +9,9 @@ use_field_init_shorthand = true
 
 # Files to ignore.
 ignore = [
-    "/build/",
-    "/*-build/",
-    "/build-*/",
-
     # Do not format tests.
     "rustc_public/tests",
 
-    # Ignore build.rs.
-    "rustc_public/build.rs",
+    # Do not format build.rs.
+    "build.rs",
 ]
