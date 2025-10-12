@@ -17,6 +17,14 @@ serde = { version = "1.0.125", features = [ "derive" ] }
 tracing = "0.1"
 # tidy-alphabetical-end
 
+[dev-dependencies]
+regex = "1.5.5"
+ui_test = "0.30.2"
+
+[[test]]
+name = "compiletest"
+harness = false
+
 [features]
 # tidy-alphabetical-start
 # Provides access to APIs that expose internals of the rust compiler.
