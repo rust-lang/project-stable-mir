@@ -7,16 +7,14 @@ mod sanity_checks;
 
 extern crate rustc_driver;
 extern crate rustc_interface;
-#[macro_use]
-extern crate rustc_smir;
-extern crate stable_mir;
+extern crate rustc_middle;
 
-use rustc_smir::{run, rustc_internal};
-use stable_mir::CompilerError;
 use std::ops::ControlFlow;
-use std::panic::{catch_unwind, AssertUnwindSafe};
+use std::panic::{AssertUnwindSafe, catch_unwind};
 use std::process::ExitCode;
 use std::sync::atomic::{AtomicBool, Ordering};
+
+use rustc_public::{CompilerError, run};
 
 // ---- Arguments that should be parsed by the test-driver (w/ "smir" prefix)
 const CHECK_ARG: &str = "--smir-check";
@@ -40,17 +38,11 @@ fn main() -> ExitCode {
     let args = std::env::args();
     let (smir_args, rustc_args): (Vec<String>, _) = args.partition(|arg| arg.starts_with("--smir"));
     let result = if smir_args.contains(&CHECK_ARG.to_string()) {
-        VERBOSE.store(
-            smir_args.contains(&VERBOSE_ARG.to_string()),
-            Ordering::Relaxed,
-        );
-        FIXME_CHECKS.store(
-            smir_args.contains(&FIXME_ARG.to_string()),
-            Ordering::Relaxed,
-        );
-        run!(rustc_args, test_stable_mir)
+        VERBOSE.store(smir_args.contains(&VERBOSE_ARG.to_string()), Ordering::Relaxed);
+        FIXME_CHECKS.store(smir_args.contains(&FIXME_ARG.to_string()), Ordering::Relaxed);
+        run!(&rustc_args, test_stable_mir)
     } else {
-        run!(rustc_args, || ControlFlow::<()>::Continue(()))
+        run!(&rustc_args, || ControlFlow::<()>::Continue(()))
     };
     if result.is_ok() || matches!(result, Err(CompilerError::Skipped)) {
         ExitCode::SUCCESS
@@ -93,11 +85,7 @@ fn test_stable_mir() -> ControlFlow<()> {
         success.len(),
         failure.len()
     ));
-    if failure.is_empty() {
-        ControlFlow::<()>::Continue(())
-    } else {
-        ControlFlow::<()>::Break(())
-    }
+    if failure.is_empty() { ControlFlow::<()>::Continue(()) } else { ControlFlow::<()>::Break(()) }
 }
 
 fn run_test<F: FnOnce() -> TestResult>(name: &str, f: F) -> TestResult {

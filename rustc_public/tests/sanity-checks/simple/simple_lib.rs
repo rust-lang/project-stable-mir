@@ -1,3 +1,5 @@
+//@check-pass
+
 //! Just a simple library
 
 pub struct Point {

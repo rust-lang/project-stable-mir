@@ -7,6 +7,7 @@
 //! This API is still completely unstable and subject to change.
 
 #![allow(rustc::usage_of_ty_tykind)]
+#![cfg_attr(not(feature = "rustc-build"), feature(rustc_private))]
 #![doc(
     html_root_url = "https://doc.rust-lang.org/nightly/nightly-rustc/",
     test(attr(allow(unused_variables), deny(warnings)))
@@ -18,6 +19,23 @@
 //!
 //! The goal is to eventually be published on
 //! [crates.io](https://crates.io).
+
+#[cfg(not(feature = "rustc-build"))]
+macro_rules! rustc_crates {
+    () => {
+        extern crate rustc_abi;
+        extern crate rustc_driver;
+        extern crate rustc_hir;
+        extern crate rustc_middle;
+        extern crate rustc_public_bridge;
+        extern crate rustc_session;
+        extern crate rustc_span;
+        extern crate rustc_target;
+    };
+}
+
+#[cfg(not(feature = "rustc-build"))]
+rustc_crates!();
 
 use std::fmt::Debug;
 use std::{fmt, io};

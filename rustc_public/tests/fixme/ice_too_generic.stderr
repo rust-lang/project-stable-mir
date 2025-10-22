@@ -1,0 +1,6 @@
+
+thread 'rustc' ($TID) panicked at rustc_public/src/alloc.rs:LL:CC:
+Failed to convert: Scalar($HEX) to std::option::Option<&'{erased} A/#1>
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Test sanity_checks::test_all_fns: Failed:
+    - Panic!

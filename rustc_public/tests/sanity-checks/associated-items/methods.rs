@@ -1,3 +1,5 @@
+//@check-pass
+
 //! Example derived from <https://doc.rust-lang.org/reference/items/associated-items.html>
 #![feature(box_into_inner)]
 

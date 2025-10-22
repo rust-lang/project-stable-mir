@@ -1,0 +1,12 @@
+[package]
+name = "devtool"
+version = "0.0.0"
+authors = ["rustc_public team"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rust-lang/project-stable-mir"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.99"
+clap = { version = "4.1.3", features = ["derive"] }
+xshell = "0.2.6"

@@ -1,8 +1,11 @@
 [package]
 name = "test-drive"
-description = "A rustc wrapper that can be used to test stable-mir on a crate"
+description = "A rustc wrapper that can be used to test rustc_public on a crate"
 version = "0.0.0"
 edition = "2021"
+
+[dependencies]
+rustc_public = { path = "../rustc_public", features = ["rustc_internal"] }
 
 [package.metadata.rust-analyzer]
 # This crate uses #[feature(rustc_private)].

@@ -1,0 +1,17 @@
+# Run rustfmt with this config (it should be picked up automatically).
+# Matches the rustfmt.toml of rustc.
+style_edition = "2024"
+use_small_heuristics = "Max"
+merge_derives = false
+group_imports = "StdExternalCrate"
+imports_granularity = "Module"
+use_field_init_shorthand = true
+
+# Files to ignore.
+ignore = [
+    # Do not format tests.
+    "rustc_public/tests",
+
+    # Do not format build.rs.
+    "build.rs",
+]

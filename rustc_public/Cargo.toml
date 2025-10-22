@@ -1,26 +1,43 @@
 [package]
 name = "rustc_public"
 version = "0.1.0-preview"
+authors = ["rustc_public team"]
+description = "Define compiler intermediate representation usable by external tools"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rust-lang/project-stable-mir"
 edition = "2024"
+build = "build.rs"
 
 [dependencies]
 # tidy-alphabetical-start
-rustc_abi = { path = "../rustc_abi" }
-rustc_hir = { path = "../rustc_hir" }
-rustc_middle = { path = "../rustc_middle" }
-rustc_public_bridge = { path = "../rustc_public_bridge" }
-rustc_session = { path = "../rustc_session" }
-rustc_span = { path = "../rustc_span" }
-rustc_target = { path = "../rustc_target" }
 scoped-tls = "1.0"
 serde = { version = "1.0.125", features = [ "derive" ] }
 tracing = "0.1"
 # tidy-alphabetical-end
 
+[build-dependencies]
+rustversion = "1"
+
+[dev-dependencies]
+regex = "1.5.5"
+ui_test = "0.30.2"
+
+[[test]]
+name = "compiletest"
+harness = false
+
 [features]
 # tidy-alphabetical-start
+# This feature should only be enabled when building `rustc_public` as part
+# of the Rust compiler.
+rustc-build = []
 # Provides access to APIs that expose internals of the rust compiler.
 # APIs enabled by this feature are unstable. They can be removed or modified
 # at any point and they are not included in the crate's semantic versioning.
 rustc_internal = []
 # tidy-alphabetical-end
+
+[package.metadata.rust-analyzer]
+# This crate uses #[feature(rustc_private)].
+# See https://github.com/rust-analyzer/rust-analyzer/pull/7891
+rustc_private = true
