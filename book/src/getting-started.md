@@ -19,11 +19,11 @@ We also include a [Tips and Tricks](./tricks.md) section that is related to a fe
 encounter,
 that is not directly related to the `rustc_public` crate and APIs.
 
-Our repository also includes a little [demo crate](https://github.com/rust-lang/project-stable-mir/tree/main/demo) that
+Our repository also includes a little [demo crate](https://github.com/rust-lang/rustc_public/tree/main/demo) that
 demonstrate how `rustc_public` crate can be used to analyze the main function of a crate.
 
 The latest crate documentation can be found in the
 [nightly documentation here](https://doc.rust-lang.org/nightly/nightly-rustc/rustc_public/index.html)
 
 [^release]: We are planning to release the `rustc_public` crate into crates.io in the near future.
-See issue [#0030](https://github.com/rust-lang/project-stable-mir/issues/30) for the current release status.
+See issue [#0030](https://github.com/rust-lang/rustc_public/issues/30) for the current release status.

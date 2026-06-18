@@ -98,7 +98,7 @@ pub fn test_instances() -> TestResult {
             for term in visitor.terminators {
                 match &term.kind {
                     // We currently don't support Copy / Move `ty()` due to missing Place::ty().
-                    // https://github.com/rust-lang/project-stable-mir/issues/49
+                    // https://github.com/rust-lang/rustc_public/issues/49
                     mir::TerminatorKind::Call {
                         func: mir::Operand::Constant(constant), ..
                     } => {
@@ -147,7 +147,7 @@ fn check_body(name: &str, body: &mir::Body) -> Result<BodyVisitor, String> {
     for local in body.locals() {
         if !visitor.types.contains(&local.ty) {
             // Format fails due to unsupported CoroutineWitness.
-            // See https://github.com/rust-lang/project-stable-mir/issues/50.
+            // See https://github.com/rust-lang/rustc_public/issues/50.
             check(false, format!("Function `{name}`: Missing type `{:?}`", local.ty))?;
         };
     }
