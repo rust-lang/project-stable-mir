@@ -7,7 +7,7 @@
 -->
 ![project group status: active](https://img.shields.io/badge/status-active-brightgreen.svg)
 [![project group documentation](https://img.shields.io/badge/MDBook-View%20Documentation-blue)][gh-pages]
-[![Run compiler tests](https://github.com/rust-lang/project-stable-mir/actions/workflows/nightly.yml/badge.svg)](https://github.com/rust-lang/project-stable-mir/actions/workflows/nightly.yml)
+[![Run compiler tests](https://github.com/rust-lang/rustc_public/actions/workflows/nightly.yml/badge.svg)](https://github.com/rust-lang/rustc_public/actions/workflows/nightly.yml)
 
 
 <!--
@@ -27,9 +27,9 @@ This is the repository we use to organise and document our work.
 
 If you are wondering how to use rustc_public in your project, please check out the [Getting Started][tutorial] chapter.
 
-[gh-pages]: https://rust-lang.github.io/project-stable-mir
+[gh-pages]: https://rust-lang.github.io/rustc_public/
 
-[tutorial]: https://rust-lang.github.io/project-stable-mir/getting-started.html
+[tutorial]: https://rust-lang.github.io/rustc_public/getting-started.html
 
 ## How Can I Get Involved?
 
@@ -43,7 +43,7 @@ We also participate on [Zulip][chat-link], feel free to introduce
 yourself over there and ask us any questions you have.
 
 
-[open issues]: https://github.com/rust-lang/project-stable-mir/issues
+[open issues]: https://github.com/rust-lang/rustc_public/issues
 
 [chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-stable-mir
 
