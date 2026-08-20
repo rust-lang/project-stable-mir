@@ -45,6 +45,6 @@ yourself over there and ask us any questions you have.
 
 [open issues]: https://github.com/rust-lang/rustc_public/issues
 
-[chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-stable-mir
+[chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/320896-project-rustc-public
 
-[team-toml]: https://github.com/rust-lang/team/blob/master/teams/project-stable-mir.toml
+[team-toml]: https://github.com/rust-lang/team/blob/main/teams/project-rustc-public.toml

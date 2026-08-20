@@ -1,6 +1,6 @@
 # Initial Integration
 
-For an example of how to use `rustc_public`, see the [`demo/`] directory of the project-stable-mir repo.
+For an example of how to use `rustc_public`, see the [`demo/`] directory of the rustc_public repo.
 For a tutorial, read on!
 
 In order to use `rustc_public` in your crate, you will need to do the following:
@@ -30,7 +30,7 @@ components = ["llvm-tools", "rustc-dev", "rust-src"]
 ## Initializing `rustc_public`
 
 There's currently no stable way to initialize the Rust compiler and `rustc_public`.
-See [#0069](https://github.com/rust-lang/project-stable-mir/issues/69) for more details.
+See [#0069](https://github.com/rust-lang/rustc_public/issues/69) for more details.
 
 Instead, `rustc_public` includes two unstable workarounds to give you a quick start.
 The `run` and `run_with_tcx` macros, both from present in the `rustc_public` crate.
@@ -110,4 +110,4 @@ TODO
 
 TODO
 
-[`demo/`](https://github.com/rust-lang/project-stable-mir/tree/main/demo)
+[`demo/`](https://github.com/rust-lang/rustc_public/tree/main/demo)

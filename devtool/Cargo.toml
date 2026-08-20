@@ -3,7 +3,7 @@ name = "devtool"
 version = "0.0.0"
 authors = ["rustc_public team"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/rust-lang/project-stable-mir"
+repository = "https://github.com/rust-lang/rustc_public"
 edition = "2021"
 
 [dependencies]
