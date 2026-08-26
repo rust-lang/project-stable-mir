@@ -9,7 +9,4 @@ TARGET_DIR="$ROOT_DIR"/target
 REPO_TOOLCHAIN=$(rustup show active-toolchain | (read toolchain _; echo $toolchain))
 TOOLCHAIN="${TOOLCHAIN:-${REPO_TOOLCHAIN}}"
 
-cargo +${TOOLCHAIN} build --manifest-path "${ROOT_DIR}"/devtool/Cargo.toml \
-  --target-dir "${TARGET_DIR}"
-
-"${TARGET_DIR}"/debug/devtool "$@"
+cargo +${TOOLCHAIN} xtask "$@"

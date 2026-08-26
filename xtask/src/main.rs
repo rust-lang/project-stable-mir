@@ -66,7 +66,7 @@ pub enum GithookCommand {
 }
 
 #[derive(Parser)]
-#[command(name = "devtool")]
+#[command(name = "xtask")]
 pub struct Cli {
     #[command(subcommand)]
     pub command: Command,
@@ -224,7 +224,7 @@ fn main() -> Result<()> {
         Command::Fmt { check, flags } => {
             let cx = DevCx::new()?;
             cx.fmt(check, "rustc_public", &flags)?;
-            cx.fmt(check, "devtool", &flags)?;
+            cx.fmt(check, "xtask", &flags)?;
             cx.fmt(check, "test-drive", &flags)?;
             Ok(())
         }
