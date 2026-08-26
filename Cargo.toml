@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
-    "devtool",
+    "xtask",
     "rustc_public",
     "test-drive",
 ]
@@ -11,3 +11,5 @@ exclude = [
     "demo",
     "target",
 ]
+
+default-members = ["rustc_public", "test-drive"]
