@@ -11,3 +11,5 @@ exclude = [
     "demo",
     "target",
 ]
+
+default-members = ["rustc_public", "test-drive"]
